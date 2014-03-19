@@ -1,0 +1,16 @@
+[
+{
+  "modid": "secretcraftclientmod",
+  "name": "Secretcraft Client",
+  "description": "Herp derp.",
+  "version": "${version}",
+  "mcversion": "${mcversion}",
+  "url": "",
+  "updateUrl": "",
+  "authors": ["d4rkpl4y3r"],
+  "credits": "",
+  "logoFile": "",
+  "screenshots": [],
+  "dependencies": []
+}
+]
