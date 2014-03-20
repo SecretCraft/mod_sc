@@ -8,6 +8,7 @@ import java.util.List;
 
 import cpw.mods.fml.common.FMLCommonHandler;
 
+import de.secretcraft.scclient.FastSign;
 import de.secretcraft.scclient.util.Pair;
 
 import net.minecraft.client.Minecraft;
@@ -22,6 +23,7 @@ public class EventManager {
 		triggerEvents = true;
 		
 		registerEvents(new EventSpecifier());
+		registerEvents(new FastSign());
 	}
 	
 	public static void sendPacketWithoutEvent(Packet packet) {
