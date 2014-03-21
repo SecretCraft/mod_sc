@@ -16,9 +16,11 @@ import net.minecraft.block.Block;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.EntityList;
-import net.minecraft.entity.EntityLiving;
+import net.minecraft.entity.EntityLivingBase;
 import net.minecraft.entity.passive.EntityAnimal;
+import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.item.Item;
+import net.minecraft.item.ItemBlock;
 import net.minecraft.item.ItemStack;
 import net.minecraft.util.MovingObjectPosition;
 import net.minecraft.util.StatCollector;
@@ -54,19 +56,29 @@ public class RayTraceInformation extends BasicGuiOverlay implements EventListene
 		displayText.clear();
 		if(rayTrace.typeOfHit == MovingObjectType.BLOCK) {
 			BlockWrapper block = new BlockWrapper(rayTrace.blockX, rayTrace.blockY, rayTrace.blockZ);
+			String name;
 			try {
-				displayText.add("Name: " + (new ItemStack(Item.getItemFromBlock(block.getBlock()), 1, block.getMetadata())).getDisplayName());
+				Item item = block.getItem();
+				Block bl = (item instanceof ItemBlock && !block.getBlock().isFlowerPot()) ?
+						Block.getBlockFromItem(item) : block.getBlock();
+                int dmg = bl.getDamageValue(mc.theWorld, block.x, block.y, block.z);
+                name = (new ItemStack(item, 1, dmg)).getDisplayName();
 			} catch(NullPointerException npe) {
-				displayText.add("Name: " + block.getBlock().getLocalizedName());
+				name = block.getBlock().getLocalizedName();
 			}
+			displayText.add("Name: " + name);
 			displayText.add("NamedID: " + Block.blockRegistry.getNameForObject(block.getBlock()).replaceFirst("minecraft:", ""));
 			displayText.add("Metadata: " + block.getMetadata());
 			displayText.add("Position: " + block);
 		} else if(rayTrace.typeOfHit == MovingObjectType.ENTITY) {
 			Entity entity = rayTrace.entityHit;
-			displayText.add("Name: " + EntityList.getEntityString(entity));
-			if(entity instanceof EntityLiving) {
-				EntityLiving e = (EntityLiving)entity;
+			if(entity instanceof EntityPlayer) {
+				displayText.add("Name: " + ((EntityPlayer)entity).getGameProfile().getName());
+			} else {
+				displayText.add("Name: " + EntityList.getEntityString(entity));
+			}
+			if(entity instanceof EntityLivingBase) {
+				EntityLivingBase e = (EntityLivingBase)entity;
 				displayText.add("Health: " + ((int)e.getHealth()) + "/" + ((int)e.getMaxHealth()));
 				displayText.add("Armor: " + e.getTotalArmorValue());
 				if(entity instanceof EntityAnimal) {

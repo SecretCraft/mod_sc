@@ -12,6 +12,7 @@ import net.minecraft.block.material.Material;
 import net.minecraft.client.Minecraft;
 import net.minecraft.entity.player.EntityPlayer;
 import net.minecraft.init.Blocks;
+import net.minecraft.item.Item;
 import net.minecraft.tileentity.TileEntity;
 import net.minecraft.tileentity.TileEntitySign;
 import net.minecraft.world.World;
@@ -144,6 +145,14 @@ public class BlockWrapper {
 	
 	public int getMetadata() {
 		return world.getBlockMetadata(x, y, z);
+	}
+	
+	public Item getItem() {
+		return getBlock().getItem(world, x, y, z);
+	}
+
+	public int getDamageDropped() {
+		return getBlock().getDamageValue(world, x, y, z);
 	}
 	
 	/**
